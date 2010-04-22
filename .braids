@@ -1,0 +1,8 @@
+--- 
+vendor/ringo: 
+  squashed: true
+  url: git://github.com/jayferd/ringo
+  branch: master
+  type: git
+  revision: e4a8b3a6df6df39a09925c0437cd7cdc5aaa38d0
+  remote: braid/vendor/ringo

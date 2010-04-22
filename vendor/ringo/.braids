@@ -1,0 +1,8 @@
+--- 
+vendor/mock_redis: 
+  squashed: true
+  url: git://github.com/jayferd/mock_redis
+  branch: master
+  type: git
+  revision: b3f7e74dedc32076760fbd5c4720c0b0a1087466
+  remote: braid/vendor/mock-redis
