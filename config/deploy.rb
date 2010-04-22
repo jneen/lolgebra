@@ -1,3 +1,4 @@
+require File.expand_path(File.join(File.dirname(__FILE__), 'railsless-deploy.rb'))
 set :application, "lolgebra"
 
 set :scm, :git
