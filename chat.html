@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>MathQuill Chat Demo</title>
+
+<style type="text/css">
+body{
+  max-width:6.5in;
+  margin: 0 auto;
+}
+div#chatbox p{
+  margin:0 0 8pt 0;
+  padding:0;
+  font-family: sans-serif;
+  font-size: 11pt;
+}
+</style>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+var chatbox, textarea, label, lastId, untilId, posting, polling, gettingOlder, pollingIndicator;
+$(function(){
+  chatbox=$('#chatbox');
+  textarea=$('.mathquill-textbox');
+  label=$('label');
+  pollingIndicator = $('#polling');
+  $.getJSON('%%getMessagesUrl%%', {}, function(response){
+    if(!response || !response.status){
+      $('#loading').text('Oops, sorry, there was a problem loading messages.');
+      return;
+    }
+    $('#loading').remove();
+    parseResponse(response);
+    untilId = lastId - 9;
+    chatbox.scroll(getOlder);
+    polling=false;
+    setInterval(poll, 500);
+  });
+  textarea.keydown(function(e){
+    if(e.which === 13 && !e.shiftKey){
+      postMessage();
+      return false;
+    }
+  });
+});
+function appendMsg(msg){
+  var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight());
+  chatbox.append('<p><b>'+msg.user+':</b> '+decodeURIComponent(msg.content));
+  if(wasAtBottom)
+     chatbox.scrollTop(chatbox[0].scrollHeight);
+}
+function poll(){
+  if(!polling){
+    polling=true;  
+    pollingIndicator.show();
+    $.getJSON('%%getMessagesUrl%%', {last_id:lastId}, function(response){
+      if(response && response.status)
+        parseResponse(response);
+      else
+        alert('Connection lost! Retrying...');
+      pollingIndicator.hide();
+      polling=false;
+    });
+  }
+}
+function parseResponse(response){
+  lastId=response.last_id;
+  for(var i = 0; i < response.messages.length; i += 1)
+    appendMsg(response.messages[i]);
+}
+function postMessage(){
+  if(posting)
+    return;
+  posting=true;
+  label.html('Posting your message...');
+  $.post('%%postMessageUrl%', {'content' : encodeURIComponent(textarea.val())} , function(response) {
+    posting=false;
+    if(!response || !response.status){
+      alert("Oops, sorry, there was a problem posting your message.");
+      label.html('Could not post message');
+    }else{
+      label.html('&nbsp;');
+      textarea.val('');
+    }
+  }, 'json');
+}
+function getOlder(){
+  if(gettingOlder || chatbox.scrollTop() > 200)
+    return;
+  gettingOlder=true;
+  if(untilId > 1) // get one extra to see if there are any more
+    $.getJSON('%%getMessagesUrl%%', {last_id:untilId,num_msgs:11}, function(response) {
+      untilId -= 10;
+      for(var i = 0; i < Math.min(response.messages.length,10); i += 1)
+        chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].user+':</b> '+decodeURIComponent(response.messages[i].content)+'</p>').prependTo(chatbox).outerHeight(true));
+     gettingOlder=false;
+     if (response.messages.length <= 10)
+       untilId = 0;
+  });
+}
+</script>
+
+<h2><a href="http://laughinghan.github.com/mathquill">MathQuill Chat Demo</a></h2>
+
+<div id="chatbox" style="height:400px;width:100%;overflow-y:scroll;border:solid black 1pt;padding:2pt">
+<p id="loading">Loading...</p>
+</div>
+
+<form onsubmit="postMessage();return false">
+<label>&nbsp;</label>
+<p id="polling" style="color:gray;margin:0;float:right">Polling...</p>
+<br>
+<span class="mathquill-textbox" style="width:100%"></span>
+</form>
+
+</body>
+</html>
