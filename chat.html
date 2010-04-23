@@ -19,14 +19,43 @@ div#chatbox p{
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 
+<script type="text/javascript" src="/faye.js"></script>
+
 <script type="text/javascript">
-var chatbox, textarea, label, lastId, untilId, posting, polling, gettingOlder, pollingIndicator;
-$(function(){
-  chatbox=$('#chatbox');
-  textarea=$('.mathquill-textbox');
-  label=$('label');
-  pollingIndicator = $('#polling');
-  $.getJSON('%%getMessagesUrl%%', {}, function(response){
+$(function()
+{
+  var lastId, untilId;
+  function appendMsg(msg)
+  {
+    var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight());
+    chatbox.append('<p><b>'+msg.name+':</b> '+decodeURIComponent(msg.message));
+    if(wasAtBottom)
+       chatbox.scrollTop(chatbox[0].scrollHeight);
+  }
+  function parseResponse(response)
+  {
+    lastId = response.last_id;
+    for(var i = 0; i < response.messages.length; i += 1)
+      appendMsg(response.messages[i]);
+  }
+  var gettingOlder = false, chatbox = $('#chatbox');
+  function getOlder(){
+    if(gettingOlder || chatbox.scrollTop() > 200)
+      return;
+    gettingOlder = true;
+    if(untilId > 1) // get one extra to see if there are any more
+      $.getJSON('/rooms/<%=@room_name%>/message', { start: untilId-11, end: untilId }, function(response) {
+        untilId -= 10;
+        for(var i = 0; i < Math.min(response.messages.length,10); i += 1)
+          chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].user+':</b> '+decodeURIComponent(response.messages[i].content)+'</p>').prependTo(chatbox).outerHeight(true));
+       gettingOlder = false;
+       if (response.messages.length <= 10)
+         untilId = 0;
+    });
+  }
+  //first request get last 10 messages
+  $.getJSON('/rooms/<%=@room_name%>/messages', { start: -10, end: -1 }, function(response)
+  {
     if(!response || !response.status){
       $('#loading').text('Oops, sorry, there was a problem loading messages.');
       return;
@@ -34,72 +63,35 @@ $(function(){
     $('#loading').remove();
     parseResponse(response);
     untilId = lastId - 9;
+    //now that the first request went through, all the initialization code
     chatbox.scroll(getOlder);
-    polling=false;
-    setInterval(poll, 500);
-  });
-  textarea.keydown(function(e){
-    if(e.which === 13 && !e.shiftKey){
-      postMessage();
-      return false;
-    }
+    var faye = new Faye.Client('/faye', {timeout: 120});
+    faye.subscribe('/<%=@room_name%>', function(msg)
+    {
+      appendMsg(msg);
+    });
+    var preventDefault;
+    $('.mathquill-textbox').keydown(function(e)
+    {
+      if(e.which === 13 && !e.shiftKey && !(e.ctrlKey || e.metaKey))
+      {
+        faye.publish('/<%=@room_name%>', {
+          name: '<%=@name%>',
+          message: $(this).val()
+        });
+        preventDefault = true;
+        return false;
+      }
+    }).keypress(function()
+    {
+      if(preventDefault)
+      {
+        preventDefault = false;
+        return false;
+      }
+    });
   });
 });
-function appendMsg(msg){
-  var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight());
-  chatbox.append('<p><b>'+msg.user+':</b> '+decodeURIComponent(msg.content));
-  if(wasAtBottom)
-     chatbox.scrollTop(chatbox[0].scrollHeight);
-}
-function poll(){
-  if(!polling){
-    polling=true;  
-    pollingIndicator.show();
-    $.getJSON('%%getMessagesUrl%%', {last_id:lastId}, function(response){
-      if(response && response.status)
-        parseResponse(response);
-      else
-        alert('Connection lost! Retrying...');
-      pollingIndicator.hide();
-      polling=false;
-    });
-  }
-}
-function parseResponse(response){
-  lastId=response.last_id;
-  for(var i = 0; i < response.messages.length; i += 1)
-    appendMsg(response.messages[i]);
-}
-function postMessage(){
-  if(posting)
-    return;
-  posting=true;
-  label.html('Posting your message...');
-  $.post('%%postMessageUrl%', {'content' : encodeURIComponent(textarea.val())} , function(response) {
-    posting=false;
-    if(!response || !response.status){
-      alert("Oops, sorry, there was a problem posting your message.");
-      label.html('Could not post message');
-    }else{
-      label.html('&nbsp;');
-      textarea.val('');
-    }
-  }, 'json');
-}
-function getOlder(){
-  if(gettingOlder || chatbox.scrollTop() > 200)
-    return;
-  gettingOlder=true;
-  if(untilId > 1) // get one extra to see if there are any more
-    $.getJSON('%%getMessagesUrl%%', {last_id:untilId,num_msgs:11}, function(response) {
-      untilId -= 10;
-      for(var i = 0; i < Math.min(response.messages.length,10); i += 1)
-        chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].user+':</b> '+decodeURIComponent(response.messages[i].content)+'</p>').prependTo(chatbox).outerHeight(true));
-     gettingOlder=false;
-     if (response.messages.length <= 10)
-       untilId = 0;
-  });
-}
 </script>
 
 <h2><a href="http://laughinghan.github.com/mathquill">MathQuill Chat Demo</a></h2>
