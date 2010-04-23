@@ -10,7 +10,25 @@ set :user, 'git'
 set :use_sudo, false
 
 namespace :deploy do
+  task :run_in_current do |bash|
+    run "cd #{deploy_to}/current && #{bash}"
+  end
+
+  task :start do
+    deploy.run_in_current <<-bash
+      nohup thin -C config/thin.yml start
+    bash
+  end
+
+  task :stop do
+    deploy.run_in_current <<-bash
+      nohup thin -C config/thin.yml stop
+    bash
+  end
+
   task :restart do
-    run "touch #{current_path}/tmp/restart.txt"
+    deploy.run_in_current <<-bash
+      thin -C config/thin.yml restart
+    bash
   end
 end
