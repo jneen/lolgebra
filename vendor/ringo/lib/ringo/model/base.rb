@@ -43,27 +43,6 @@ module Ringo
       end
     end
 
-    def inspect(recursed_list=Set.new)
-      recursed_list.add [self.class, self.id]
-      #p recursed_list
-      attrs = self.class.fields.keys.map do |slug|
-        val = self.send(slug)
-        if val.is_a?(Model)
-          if recursed_list.include?([val.class, val.id])
-            nil
-          else
-            [slug, val.inspect(recursed_list)]
-          end
-        else
-          [slug, val.inspect]
-        end
-      end.compact.map do |slug, val|
-        "@#{slug}=#{val}"
-      end.compact.join(' ')
-
-      "#<#{self.class.name}(#{self.id}) #{attrs}>"
-    end
-
     def id
       @id ||= redis.incr(self.class.key('__id__')).to_i
     end

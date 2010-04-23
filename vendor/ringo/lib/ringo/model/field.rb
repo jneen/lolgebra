@@ -6,7 +6,7 @@ module Ringo
     end
 
     def key_for(field)
-      Ringo.key(:models, self.class.name.to_underscores, self.id, field)
+      Ringo.key(:models, self.class.name.underscore, self.id, field)
     end
 
   end

@@ -4,5 +4,5 @@ vendor/ringo:
   url: git://github.com/jayferd/ringo
   branch: master
   type: git
-  revision: e4a8b3a6df6df39a09925c0437cd7cdc5aaa38d0
+  revision: f803875ba38194b50db6ca264369cd33a5d1cb66
   remote: braid/vendor/ringo
