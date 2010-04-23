@@ -8,6 +8,7 @@ module Ringo
   end
 end
 
+$:.unshift Ringo::ROOT
 require File.expand_path(File.join( 
   File.dirname(__FILE__),
   '../vendor/redis-rb/lib/redis.rb'
@@ -20,6 +21,7 @@ require 'ringo/core_ext.rb'
 require 'ringo/redis.rb'
 require 'redis_proxy.rb'
 require 'ringo/model.rb'
+$:.shift
 
 class << RedisProxy
   def redis
