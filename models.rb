@@ -1,6 +1,6 @@
 require 'vendor/ringo/lib/ringo.rb'
 
-REDIS = Redis.new
+REDIS = Ringo.redis
 
 class Message < Ringo::Model
   string :content
@@ -18,22 +18,14 @@ class Room < Ringo::Model
   string :name
   list :messages, :of => :references, :to => Message
 
-  def initialize(attrs={})
-    if attrs[:name]
-      @name = attrs[:name]
-      REDIS[self.name_key(attrs.delete(:name))] = self.id
-    end
-    super
-  end
-
   class << self
     def name_key(*args)
-      Room.key('name', *args)
+      self.key('name', *args)
     end
 
     alias get_by_id []
     def [](name)
-      id = REDIS[name_key(name)]
+      id = REDIS[self.name_key(name)]
       if id
         return get_by_id(id)
       else
@@ -42,11 +34,18 @@ class Room < Ringo::Model
     end
   end
 
-  alias set_name name=
+  def initialize(attrs={})
+    if attrs[:name]
+      self.name = attrs[:name]
+      REDIS[Room.name_key(attrs.delete(:name))] = self.id
+    end
+    super
+  end
+
+  alias __set_name name=
   def name=(val)
-    raise "room #{val} already exists" if Room[val]
-    REDIS.delete Room.name_key(self.name)
+    REDIS.delete[Room.name_key(self.name)] if self.name
     REDIS[Room.name_key(val)] = self.id
-    set_name(val)
+    __set_name(val)
   end
 end

@@ -37,9 +37,9 @@ module Ringo
       end
 
       attrs.each do |slug, val|
-        if self.class.fields.include? slug
+        #if self.class.fields.include? slug
           self.send(:"#{slug}=", val)
-        end
+        #end
       end
     end
 
