@@ -13,13 +13,14 @@ get '/rooms/:room_name/message' do
 end
 
 post '/rooms/:room_name/message' do
-  env['faye.client'].publish(
-    "/#{params[:room]}",
-    'message' => params[:message]
-  )
+  env['faye.client'].publish("/#{params[:room]}", {
+    'message' => params[:message],
+    'name' => params[:name]
+  })
   room = Room[params[:room_name]]
   message = Message.new(
     :content => params[:message],
     :name => params[:name]
   )
+  room.messages << message
 end
