@@ -5,8 +5,15 @@ require 'erb'
 require 'models'
 require 'messages'
 
-get '/' do
-  "Hello Wurld!"
+ROOT = File.expand_path(File.dirname(__FILE__))
+REVISION = begin
+  `cat #{File.join(ROOT, 'REVISION')}`
+rescue Errno::ENOENT
+  `git rev-parse HEAD`
+end
+
+get '/health' do
+  "Hello World! I'm running commit #{REVISION}"
 end
 
 get '/chat/:room' do
