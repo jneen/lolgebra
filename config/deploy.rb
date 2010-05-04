@@ -10,25 +10,14 @@ set :user, 'git'
 set :use_sudo, false
 
 namespace :deploy do
-  task :run_in_current do |bash|
-    run "cd #{deploy_to}/current && #{bash}"
-  end
-
-  task :start do
-    deploy.run_in_current <<-bash
-      nohup thin -C config/thin.yml start
-    bash
-  end
-
-  task :stop do
-    deploy.run_in_current <<-bash
-      nohup thin -C config/thin.yml stop
-    bash
-  end
-
-  task :restart do
-    deploy.run_in_current <<-bash
-      thin -C config/thin.yml restart
-    bash
+  [:start, :stop, :restart].each do |action|
+    desc "#{action} the Thin processes"
+    task action do
+      run <<-bash
+        /var/lib/gems/1.8/bin/thin #{action} \
+          -c #{deploy_to}/current \
+          -C #{deploy_to}/current/config/thin.yml
+      bash
+    end
   end
 end
