@@ -6,6 +6,7 @@ require 'models'
 require 'messages'
 
 ROOT = File.expand_path(File.dirname(__FILE__))
+set :views, File.join(ROOT, "views")
 REVISION = begin
   `cat #{File.join(ROOT, 'REVISION')}`
 rescue Errno::ENOENT
