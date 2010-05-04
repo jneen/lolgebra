@@ -6,7 +6,7 @@ require 'models'
 require 'messages'
 
 get '/' do
-  "Hello World!"
+  "Hello Wurld!"
 end
 
 get '/chat/:room' do
