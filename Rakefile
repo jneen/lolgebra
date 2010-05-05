@@ -3,12 +3,14 @@ require 'rake'
 ROOT = File.expand_path(File.dirname(__FILE__))
 
 begin
+  require 'rubygems'
   require 'spec/rake/spectask'
   Spec::Rake::SpecTask.new('spec') do |t|
     t.spec_files = FileList['spec/**/*_spec.rb']
     t.ruby_opts = ['-r init -r spec/helper']
   end
 rescue LoadError
+  puts "rspec not found"
   #rspec is not required to use this lib
 end
 

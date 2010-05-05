@@ -9,7 +9,7 @@ describe "posting messages" do
 
   it "can post messages" do
     (0..10).each do |i|
-      post '/chat/foo/message', {
+      post '/chat/foo/messages', {
         :message => "hello ##{i}",
         :name => "Jim-Bob"
       }
@@ -25,7 +25,7 @@ describe "interacting with messages" do
   before :each do
     Ringo.redis.flushdb
     (0..10).each do |i|
-      post '/chat/foo/message', {
+      post '/chat/foo/messages', {
         :message => "hello ##{i}",
         :user => "Jim-Bob"
       }
@@ -33,7 +33,7 @@ describe "interacting with messages" do
   end
 
   it "gets messages" do
-    get '/chat/foo/message', {
+    get '/chat/foo/messages', {
       :start => -10
     }
     m = JSON[last_response.body]

@@ -46,7 +46,7 @@ $(function()
       return;
     gettingOlder = true;
     if(untilId > 1) // get one extra to see if there are any more
-      $.getJSON('/rooms/<%=@room.name%>/messages', { start: untilId-11, end: untilId }, function(response) {
+      $.getJSON('/chat/<%=@room.name%>/messages', { start: untilId-11, end: untilId }, function(response) {
         untilId -= 10;
         for(var i = 0; i < Math.min(response.messages.length,10); i += 1)
           chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].user+':</b> '+decodeURIComponent(response.messages[i].content)+'</p>').prependTo(chatbox).outerHeight(true));
@@ -56,7 +56,7 @@ $(function()
     });
   }
   //first request get last 10 messages
-  $.getJSON('/rooms/<%=@room.name%>/messages', { start: -10, end: -1 }, function(response)
+  $.getJSON('/chat/<%=@room.name%>/messages', { start: -10, end: -1 }, function(response)
   {
     if(!response || !response.status){
       $('#loading').text('Oops, sorry, there was a problem loading messages.');
