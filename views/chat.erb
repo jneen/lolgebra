@@ -30,7 +30,6 @@ $(function()
   function appendMsg(msg)
   {
     var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight());
-    alert(msg.name+', '+msg.message);
     chatbox.append('<p><b>'+msg.name+':</b> <span class="mathquill-rendered-math">'+msg.message+'</span>')
     if(wasAtBottom)
        chatbox.scrollTop(chatbox[0].scrollHeight);
