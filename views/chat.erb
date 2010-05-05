@@ -66,7 +66,6 @@ $(function()
     parseResponse(response);
     untilId = lastId - 9;
     //now that the first request went through, all the initialization code
-    chatbox.scroll(getOlder);
     var faye = new Faye.Client('/faye', {timeout: 120});
     faye.subscribe('/<%=@room.name%>', function(msg)
     {
@@ -82,7 +81,7 @@ $(function()
           name: '<%=@username%>',
           message: encodeURIComponent($(this).blur().html().replace(/<span class="cursor blink"><\/span>/i,''))
         });
-        $(this).mathquill('revert').mathquill('textbox');
+        $(this).mathquill('revert').mathquill('textbox').focus();
         preventDefault = true;
         return false;
       }
@@ -94,6 +93,7 @@ $(function()
         return false;
       }
     });
+    chatbox.scroll(getOlder).focus();
   });
 });
 </script>
