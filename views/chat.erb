@@ -30,7 +30,7 @@ $(function()
   function appendMsg(msg)
   {
     var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight());
-    chatbox.append('<p><b>'+msg.name+':</b> '+decodeURIComponent(msg.message));
+    chatbox.append('<p><b>'+msg.name+':</b> <span class="mathquill-rendered-math">'+msg.message+'</span>')
     if(wasAtBottom)
        chatbox.scrollTop(chatbox[0].scrollHeight);
   }
@@ -46,7 +46,7 @@ $(function()
       return;
     gettingOlder = true;
     if(untilId > 1) // get one extra to see if there are any more
-      $.getJSON('/rooms/<%=@room.name%>/messages', { start: untilId-11, end: untilId }, function(response) {
+      $.getJSON('/chat/<%=@room.name%>/messages', { start: untilId-11, end: untilId }, function(response) {
         untilId -= 10;
         for(var i = 0; i < Math.min(response.messages.length,10); i += 1)
           chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].user+':</b> '+decodeURIComponent(response.messages[i].content)+'</p>').prependTo(chatbox).outerHeight(true));
@@ -56,7 +56,7 @@ $(function()
     });
   }
   //first request get last 10 messages
-  $.getJSON('/rooms/<%=@room.name%>/messages', { start: -10, end: -1 }, function(response)
+  $.getJSON('/chat/<%=@room.name%>/messages', { start: -10, end: -1 }, function(response)
   {
     if(!response || !response.status){
       $('#loading').text('Oops, sorry, there was a problem loading messages.');
@@ -77,9 +77,10 @@ $(function()
     {
       if(e.which === 13 && !e.shiftKey && !(e.ctrlKey || e.metaKey))
       {
-        faye.publish('/<%=@room.name%>', {
+        $.post('/chat/<%=@room.name%>/messages', {
+          room_name: '<%= @room.name%>',
           name: '<%=@username%>',
-          message: $(this).val()
+          message: $(this).html()
         });
         preventDefault = true;
         return false;
