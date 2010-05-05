@@ -78,10 +78,11 @@ $(function()
       if(e.which === 13 && !e.shiftKey && !(e.ctrlKey || e.metaKey))
       {
         $.post('/chat/<%=@room.name%>/messages', {
-          room_name: '<%= @room.name%>',
+          room_name: '<%=@room.name%>',
           name: '<%=@username%>',
-          message: $(this).html()
+          message: encodeURIComponent($(this).blur().html().replace(/<span class="cursor blink"></span>/i,''))
         });
+        $(this).mathquill('revert').mathquill();
         preventDefault = true;
         return false;
       }
