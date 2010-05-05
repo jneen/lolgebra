@@ -77,7 +77,8 @@ $(function()
     {
       if(e.which === 13 && !e.shiftKey && !(e.ctrlKey || e.metaKey))
       {
-        faye.publish('/<%=@room.name%>', {
+        $.post('/chat/<%=@room.name%>/messages', {
+          room_name: '<%= @room.name%>',
           name: '<%=@username%>',
           message: $(this).val()
         });
