@@ -49,7 +49,7 @@ $(function()
       $.getJSON('/chat/<%=@room.name%>/messages', { start: untilId-11, end: untilId }, function(response) {
         untilId -= 10;
         for(var i = 0; i < Math.min(response.messages.length,10); i += 1)
-          chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].user+':</b> '+decodeURIComponent(response.messages[i].content)+'</p>').prependTo(chatbox).outerHeight(true));
+          chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].name+':</b> '+decodeURIComponent(response.messages[i].message)+'</p>').prependTo(chatbox).outerHeight(true));
        gettingOlder = false;
        if (response.messages.length <= 10)
          untilId = 0;
