@@ -2,7 +2,7 @@ require 'faye'
 use Faye::RackAdapter, :mount => '/faye', :timeout => 25
 
 get '/chat/:room_name/messages' do
-  puts "LOL"
+  puts "GET #{params[:room_name]} messages start:#{params[:start]} end:#{params[:end]}"
   room = Room[params[:room_name]]
   first = params[:start].to_i
   last = (params[:end] || -1).to_i
