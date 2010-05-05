@@ -8,7 +8,8 @@ get '/chat/:room_name/messages' do
 
   return {
     :status => 1,
-    :messages => room.messages[first..last].map(&:to_hash)
+    :messages => room.messages[first..last].map(&:to_hash),
+    :last_id => last
   }.to_json
 end
 
