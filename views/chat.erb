@@ -30,7 +30,8 @@ $(function()
   function appendMsg(msg)
   {
     var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight());
-    chatbox.append('<p><b>'+msg.name+':</b> '+decodeURIComponent(msg.message));
+    alert(msg.name+', '+msg.message);
+    chatbox.append('<p><b>'+msg.name+':</b> <span class="mathquill-rendered-math">'+msg.message+'</span>')
     if(wasAtBottom)
        chatbox.scrollTop(chatbox[0].scrollHeight);
   }
@@ -80,7 +81,7 @@ $(function()
         $.post('/chat/<%=@room.name%>/messages', {
           room_name: '<%= @room.name%>',
           name: '<%=@username%>',
-          message: $(this).val()
+          message: $(this).html()
         });
         preventDefault = true;
         return false;
