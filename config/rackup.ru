@@ -1,4 +1,3 @@
 require 'sinatra'
-require '/var/src/lolgebra/current/init'
-use Faye::RackAdapter, :mount => '/faye', :timeout => 25
+require File.join(File.dirname(__FILE__), '..', 'init')
 run Sinatra::Application
