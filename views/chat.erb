@@ -30,7 +30,7 @@ $(function()
   function appendMsg(msg)
   {
     var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight());
-    chatbox.append('<p><b>'+msg.name+':</b> <span class="mathquill-rendered-math">'+decodeURIComponent(msg.message)+'</span>')
+    chatbox.append('<p><b>'+msg.name+':</b> <span class="mathquill-rendered-math">'+decodeURIComponent(msg.message)+'</span></p>')
     if(wasAtBottom)
        chatbox.scrollTop(chatbox[0].scrollHeight);
   }
@@ -49,7 +49,7 @@ $(function()
       $.getJSON('/chat/<%=@room.name%>/messages', { start: untilId-11, end: untilId }, function(response) {
         untilId -= 10;
         for(var i = 0; i < Math.min(response.messages.length,10); i += 1)
-          chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].name+':</b> '+decodeURIComponent(response.messages[i].message)+'</p>').prependTo(chatbox).outerHeight(true));
+          chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].name+':</b> <span class="mathquill-rendered-math">'+decodeURIComponent(response.messages[i].message)+'</span></p>').prependTo(chatbox).outerHeight(true));
        gettingOlder = false;
        if (response.messages.length <= 10)
          untilId = 0;
