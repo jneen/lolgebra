@@ -9,7 +9,7 @@ get '/chat/:room_name/messages' do
   return {
     :status => 1,
     :messages => room.messages[first..last].map(&:to_hash),
-    :last_id => last
+    :last_id => last < 0 ? room.messages.length + last : last
   }.to_json
 end
 
