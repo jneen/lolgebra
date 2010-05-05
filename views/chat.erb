@@ -55,8 +55,8 @@ $(function()
          untilId = 0;
     });
   }
-  //first request get last 10 messages
-  $.getJSON('/chat/<%=@room.name%>/messages', { start: -10, end: -1 }, function(response)
+  //first request get last 20 messages
+  $.getJSON('/chat/<%=@room.name%>/messages', { start: -20, end: -1 }, function(response)
   {
     if(!response || !response.status){
       $('#loading').text('Oops, sorry, there was a problem loading messages.');
