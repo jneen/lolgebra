@@ -80,7 +80,7 @@ $(function()
         $.post('/chat/<%=@room.name%>/messages', {
           room_name: '<%=@room.name%>',
           name: '<%=@username%>',
-          message: encodeURIComponent($(this).blur().html().replace(/<span class="cursor blink"></span>/i,''))
+          message: encodeURIComponent($(this).blur().html().replace(/<span class="cursor blink"><\/span>/i,''))
         });
         $(this).mathquill('revert').mathquill();
         preventDefault = true;
