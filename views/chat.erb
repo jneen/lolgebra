@@ -82,7 +82,7 @@ $(function()
           name: '<%=@username%>',
           message: encodeURIComponent($(this).blur().html().replace(/<span class="cursor blink"><\/span>/i,''))
         });
-        $(this).mathquill('revert').mathquill();
+        $(this).mathquill('revert').mathquill('textbox');
         preventDefault = true;
         return false;
       }
