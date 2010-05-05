@@ -1,7 +1,7 @@
 require 'faye'
 use Faye::RackAdapter, :mount => '/faye', :timeout => 25
 
-get '/chat/:room_name/message' do
+get '/chat/:room_name/messages' do
   puts "LOL"
   room = Room[params[:room_name]]
   first = params[:start].to_i
@@ -13,7 +13,7 @@ get '/chat/:room_name/message' do
   }.to_json
 end
 
-post '/chat/:room_name/message' do
+post '/chat/:room_name/messages' do
   env['faye.client'].publish("/#{params[:room_name]}", {
     'message' => params[:message],
     'name' => params[:name]

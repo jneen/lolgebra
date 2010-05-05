@@ -18,7 +18,7 @@ get '/health' do
 end
 
 get '/chat/:room' do
-  @room_name = Room.new(:name => params[:name]).name
-  @name = params[:name]
+  @room = Room.new(:name => params[:room])
+  @username = params[:name] || "Anonymous"
   erb :chat
 end
