@@ -46,8 +46,10 @@ $(function()
       return;
     gettingOlder = true;
     if(untilId > 1) // get one extra to see if there are any more
+      //alert(untilId);
       $.getJSON('/chat/<%=@room.name%>/messages', { start: untilId-11, end: untilId }, function(response) {
         untilId -= 10;
+        $('<p>======inserting backfill, untilId='+untilId+'========</p>').prependTo(chatbox);
         for(var i = 0; i < Math.min(response.messages.length,10); i += 1)
           chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].name+':</b> <span class="mathquill-rendered-math">'+decodeURIComponent(response.messages[i].message)+'</span></p>').prependTo(chatbox).outerHeight(true));
        gettingOlder = false;
