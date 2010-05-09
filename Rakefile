@@ -16,5 +16,5 @@ end
 
 task :server do
   rackup = File.join(ROOT, 'config', 'rackup.ru')
-  `thin -R #{rackup} start`
+  `thin -R '#{rackup}' start`
 end
