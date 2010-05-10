@@ -14,7 +14,7 @@ get '/chat/:room_name/messages' do
 end
 
 post '/chat/:room_name/messages' do
-  if params[:message].empty?
+  if params[:message].strip!.empty?
     return
   end
   env['faye.client'].publish("/#{params[:room_name]}", {
