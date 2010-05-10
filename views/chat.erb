@@ -26,6 +26,8 @@ div#chatbox p{
 <script type="text/javascript">
 $(function()
 {
+  if(!/^\?name=/.test(location.search))
+    location += '?name=' + prompt('What\'s your name?', 'Nameless Lady in the Hood');
   var lastId, untilId;
   function appendMsg(msg)
   {
