@@ -44,21 +44,20 @@ $(function()
   }
   var gettingOlder = false, chatbox = $('#chatbox');
   function getOlder(){
-    if(gettingOlder || chatbox.scrollTop() > 200)
+    if(gettingOlder || untilId <= 0 || chatbox.scrollTop() > 200)
       return;
     gettingOlder = true;
-    if(untilId > 1) // get one extra to see if there are any more
-      $.getJSON('/chat/<%=@room.name%>/messages', { start: untilId-11, end: untilId }, function(response) {
-        untilId -= 10;
-        for(var i = 0; i < Math.min(response.messages.length,10); i += 1)
-          chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].name+':</b> <span class="mathquill-rendered-math">'+decodeURIComponent(response.messages[i].message)+'</span></p>').prependTo(chatbox).outerHeight(true));
-       gettingOlder = false;
-       if (response.messages.length <= 10)
-         untilId = 0;
+    var end = untilId;
+    untilId = (untilId <= 9 ? 0 : untilId - 9);
+    $.getJSON('/chat/<%=@room.name%>/messages', { start: untilId, end: end }, function(response)
+    {
+      for(var i = response.messages.length - 1; i >= 0; i -= 1)
+        chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].name+':</b> <span class="mathquill-rendered-math">'+decodeURIComponent(response.messages[i].message)+'</span></p>').prependTo(chatbox).outerHeight(true));
+     gettingOlder = false;
     });
   }
   //first request get last 20 messages
-  $.getJSON('/chat/<%=@room.name%>/messages', { start: -20, end: -1 }, function(response)
+  $.getJSON('/chat/<%=@room.name%>/messages', { start: -19, end: -1 }, function(response)
   {
     if(!response || !response.status)
     {
