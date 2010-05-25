@@ -56,7 +56,7 @@ $(function()
      gettingOlder = false;
     });
   }
-  //first request get last 20 messages
+  //first request to get latest 20 messages
   $.getJSON('/chat/<%=@room.name%>/messages', { start: -20, end: -1 }, function(response)
   {
     if(!response || !response.status)
@@ -79,8 +79,7 @@ $(function()
     {
       if(e.which === 13 && !e.shiftKey && !(e.ctrlKey || e.metaKey))
       {
-        $.post('/chat/<%=@room.name%>/messages', {
-          room_name: '<%=@room.name%>',
+        faye.publish('/<%=@room.name%>', {
           name: '<%=@username%>',
           message: encodeURIComponent($(this).blur().html().replace(/<span class="cursor blink"><\/span>/i,''))
         });

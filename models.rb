@@ -38,6 +38,12 @@ class Room < Ringo::Model
     if attrs[:name]
       self.name = attrs[:name]
       REDIS[Room.name_key(attrs.delete(:name))] = self.id
+      env['faye.client'].subscribe "/#{self.name}" do |message|
+        self.messages << Message.new(
+          :content => message.message,
+          :name => message.name
+        )
+      end
     end
     super
   end
