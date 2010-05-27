@@ -77,13 +77,15 @@ $(function()
     var preventDefault;
     $('.mathquill-textbox').keydown(function(e)
     {
-      if(e.which === 13 && !e.shiftKey && !(e.ctrlKey || e.metaKey))
+      var jQ = $(this);
+      if(e.which === 13 && !e.shiftKey && !(e.ctrlKey || e.metaKey) &&
+        jQ.find(':first:not(.cursor)').length)
       {
         faye.publish('/<%=@room.name%>', {
           name: '<%=@username%>',
-          message: encodeURIComponent($(this).blur().html().replace(/<span class="cursor blink"><\/span>/i,''))
+          message: encodeURIComponent(jQ.blur().html().replace(/<span class="cursor blink"><\/span>/i,''))
         });
-        $(this).mathquill('revert').mathquill('textbox').focus();
+        jQ.mathquill('revert').mathquill('textbox').focus();
         preventDefault = true;
         return false;
       }
