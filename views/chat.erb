@@ -79,13 +79,14 @@ $(function()
     {
       var jQ = $(this);
       if(e.which === 13 && !e.shiftKey && !(e.ctrlKey || e.metaKey) &&
-        jQ.find(':first:not(.cursor)').length)
+          jQ.find(':first:not(.cursor)').length) //ensure nonempty
       {
         faye.publish('/<%=@room.name%>', {
           name: '<%=@username%>',
           message: encodeURIComponent(jQ.blur().html().replace(/<span class="cursor blink"><\/span>/i,''))
         });
-        jQ.mathquill('revert').mathquill('textbox').focus();
+        jQ.focus().trigger({ type: 'keydown', ctrlKey: true, which: 65 })
+            .trigger({ type: 'keydown', which: 8 }); //ctrl-A, then backspace
         preventDefault = true;
         return false;
       }
