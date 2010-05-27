@@ -6,9 +6,10 @@ get '/chat/:room_name/messages' do
   first = params[:start].to_i
   last = (params[:end] || -1).to_i
 
-  # Note that the following doesn't cause duplicates because if a client
-  # has already subscribed to a channel, resubscribing just overwrites
-  # the block originally used to subscribe.
+  # Note that if a client has already subscribed to a channel,
+  # resubscribing just overwrites the block originally used to
+  # subscribe. (I had originally assumed there'd be multiple
+  # subscriptions leading to duplicate messages.)
   # I found this out by looking through the source code.
   # Documentation fail, but Ruby win!
   env['faye.client'].subscribe "/#{params[:room_name]}" do |message|
