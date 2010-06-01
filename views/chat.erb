@@ -8,12 +8,12 @@
 body{
   max-width:6.5in;
   margin: 0 auto;
+  font-family: sans-serif;
+  font-size: 11pt;
 }
 div#chatbox p{
   margin:0 0 8pt 0;
   padding:0;
-  font-family: sans-serif;
-  font-size: 11pt;
 }
 </style>
 
@@ -32,7 +32,7 @@ $(function()
   function appendMsg(msg)
   {
     var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight());
-    chatbox.append('<p><b>'+msg.name+':</b> <span class="mathquill-rendered-math">'+decodeURIComponent(msg.message)+'</span></p>')
+    chatbox.append('<p><b>'+msg.name+':</b> '+decodeURIComponent(msg.message)+'</p>')
     if(wasAtBottom)
        chatbox.scrollTop(chatbox[0].scrollHeight);
   }
@@ -52,7 +52,7 @@ $(function()
     $.getJSON('/chat/<%=@room.name%>/messages', { start: untilId, end: end }, function(response)
     {
       for(var i = response.messages.length - 1; i >= 0; i -= 1)
-        chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].name+':</b> <span class="mathquill-rendered-math">'+decodeURIComponent(response.messages[i].message)+'</span></p>').prependTo(chatbox).outerHeight(true));
+        chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].name+':</b> '+decodeURIComponent(response.messages[i].message)+'</p>').prependTo(chatbox).outerHeight(true));
      gettingOlder = false;
     });
   }
