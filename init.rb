@@ -13,6 +13,10 @@ rescue Errno::ENOENT
   `git rev-parse HEAD`
 end
 
+get '/' do
+  erb :home
+end
+
 get '/health' do
   "Hello World! I'm running commit #{REVISION}"
 end
