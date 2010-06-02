@@ -13,9 +13,16 @@ body{
 }
 </style>
 
+</head>
+<body>
+
 <h2>Lolgebra Chatrooms</h2>
 
-<p><a href="http://laughinghan.github.com/mathquill">MathQuill</a>-powered chatrooms where you can "LOL" in math!</p>
+<p><a href="http://laughinghan.github.com/mathquill">MathQuill</a>-powered chatrooms where you can "LOL" in math!
+
+<p>Join a chatroom: <input type="text" value="math" onkeydown="var text=this;setTimeout(function(){var link=document.getElementById('link');link.href='/chat/'+text.value;link.innerHTML='http://lolgebra.com/chat/'+text.value;},0);"> <a href="/chat/math" id="link">http://lolgebra.com/chat/math</a>
+
+<p>(Not case-sensitive. Joining a room that doesn&rsquo;t exist automatically creates it.)
 
 </body>
 </html>
