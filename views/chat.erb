@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<title>MathQuill Chat Demo</title>
+<title><%=@room.name%> - Lolgebra Chatroom</title>
 
 <style type="text/css">
 body{
@@ -10,6 +10,10 @@ body{
   margin: 0 auto;
   font-family: sans-serif;
   font-size: 11pt;
+}
+big{
+  font-size:200%;
+  font-weight:bold;
 }
 div#chatbox{
   height:400px;
@@ -113,7 +117,8 @@ $(function()
 });
 </script>
 
-<h2><a href="http://laughinghan.github.com/mathquill">MathQuill Chat Demo</a></h2>
+<p><big><%=@room.name%></big>
+<br>a <a href="/">lolgebra</a> chatroom
 
 <div id="chatbox">
 <p id="loading">Loading...</p>
