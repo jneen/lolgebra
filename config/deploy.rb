@@ -5,7 +5,7 @@ set :scm, :git
 set :repository, "git://github.com/jayferd/lolgebra"
 set :deploy_to, "/var/src/lolgebra/"
 
-server "dharma", :app, :web, :db, :primary => true
+server "seva", :app, :web, :db, :primary => true
 set :user, 'git'
 set :use_sudo, false
 
