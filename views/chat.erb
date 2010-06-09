@@ -84,10 +84,14 @@ $(function()
     untilId = lastId - 19;
     //now that the first request went through, all the initialization code
     chatbox.scroll(getOlder);
-    var faye = new Faye.Client('/faye', {timeout: 120});
+    var faye = new Faye.Client('/faye', {timeout: 120}), myOwnMsgs = [];
     faye.subscribe('/<%=@room.name%>', function(msg)
     {
-      appendMsg(msg);
+      var i = $.inArray(msg.name+':'+msg.message, myOwnMsgs);
+      if(i < 0)
+        appendMsg(msg);
+      else
+        delete myOwnMsgs[i];
     });
     var preventDefault;
     $('.mathquill-textbox').keydown(function(e)
@@ -96,10 +100,13 @@ $(function()
       if(e.which === 13 && !e.shiftKey && !(e.ctrlKey || e.metaKey) &&
           jQ.find(':first:not(.cursor)').length) //ensure nonempty
       {
-        faye.publish('/<%=@room.name%>', {
+        var msg = {
           name: '<%=@username%>',
           message: encodeURIComponent(jQ.blur().html().replace(/<span class="cursor blink"><\/span>/i,''))
-        });
+        };
+        myOwnMsgs[myOwnMsgs.length] = msg.name+':'+msg.message;
+        faye.publish('/<%=@room.name%>', msg);
+        appendMsg(msg);
         jQ.focus().trigger({ type: 'keydown', ctrlKey: true, which: 65 })
             .trigger({ type: 'keydown', which: 8 }); //ctrl-A, then backspace
         preventDefault = true;
