@@ -28,6 +28,26 @@ body{
 
 <script type="text/javascript">
 (function(){
+  var empty = true;
+  function onfocus()
+  {
+    if(empty)
+    {
+      this.value = '';
+      this.style.color = 'black';
+      this.onkeydown();
+    }
+  }
+  function onblur()
+  {
+    empty = this.value === '';
+    if(empty)
+    {
+      this.value = 'math';
+      this.style.color = 'gray';
+      this.onkeydown();
+    }
+  }
   var updateLink = (function(){
     var text = document.getElementsByTagName('input')[0];
     return function()
@@ -43,6 +63,8 @@ body{
   }
   (function(){
     var textbox = document.getElementsByTagName('input')[0];
+    textbox.onfocus = onfocus;
+    textbox.onblur = onblur;
     textbox.onkeydown = onkeydown;
   }());
 }());
