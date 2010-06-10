@@ -6,10 +6,12 @@ $(function()
   var lastId, untilId;
   function appendMsg(msg)
   {
-    var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight());
-    chatbox.append('<p><b>'+msg.name+':</b> '+decodeURIComponent(msg.message)+'</p>')
+    var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight()),
+      msg = $('<p><b>'+msg.name+':</b> '+decodeURIComponent(msg.message)+'</p>');
+    chatbox.append(msg);
     if(wasAtBottom)
        chatbox.scrollTop(chatbox[0].scrollHeight);
+    return msg;
   }
   function parseResponse(response)
   {
@@ -47,11 +49,16 @@ $(function()
     var faye = new Faye.Client('/faye', {timeout: 120}), myOwnMsgs = [];
     faye.subscribe('/'+data.room_name, function(msg)
     {
-      var i = $.inArray(msg.name+':'+msg.message, myOwnMsgs);
-      if(i < 0)
-        appendMsg(msg);
-      else
-        delete myOwnMsgs[i];
+      for(var i = 0, str = msg.name+':'+msg.message; i < myOwnMsgs.length; i += 1)
+        if(myOwnMsgs[i] && myOwnMsgs[i].str === str)
+        {
+          myOwnMsgs[i].jQ.css('color','black');
+          delete myOwnMsgs[i];
+          while(myOwnMsgs.length && !myOwnMsgs[myOwnMsgs.length - 1])
+            myOwnMsgs.length -= 1;
+          return;
+        }
+      appendMsg(msg);
     });
     var preventDefault;
     $('.mathquill-textbox').keydown(function(e)
@@ -64,9 +71,11 @@ $(function()
           name: data.username,
           message: encodeURIComponent(jQ.blur().html().replace(/<span class="cursor blink"><\/span>/i,''))
         };
-        myOwnMsgs[myOwnMsgs.length] = msg.name+':'+msg.message;
+        myOwnMsgs[myOwnMsgs.length] = {
+          str: msg.name+':'+msg.message,
+          jQ: appendMsg(msg).css('color','#445')
+        };
         faye.publish('/'+data.room_name, msg);
-        appendMsg(msg);
         jQ.focus().trigger({ type: 'keydown', ctrlKey: true, which: 65 })
             .trigger({ type: 'keydown', which: 8 }); //ctrl-A, then backspace
         preventDefault = true;
