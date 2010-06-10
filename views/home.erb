@@ -22,8 +22,31 @@ body{
 <p><i><a href="http://laughinghan.github.com/mathquill">MathQuill</a>-powered chatrooms where you can "LOL" in math!</i>
 
 <form onsubmit="location='/chat/'+this.textbox.value;return false;">
-Join a chatroom: <input type="text" name="textbox" value="math" onkeydown="var text=this;setTimeout(function(){var link=document.getElementById('link');link.href='/chat/'+text.value;link.innerHTML='http://lolgebra.com/chat/'+text.value;},0);"> <a href="/chat/math" id="link">http://lolgebra.com/chat/math</a>
+  Join a chatroom: <input type="text" name="textbox" value="math" style="color:gray">
+  <a href="/chat/math" id="link">http://lolgebra.com/chat/math</a>
 </form>
+
+<script type="text/javascript">
+(function(){
+  var updateLink = (function(){
+    var text = document.getElementsByTagName('input')[0];
+    return function()
+    {
+      var link = document.getElementById('link');
+      link.href = '/chat/' + text.value;
+      link.innerHTML = 'http://lolgebra.com/chat/' + text.value;
+    };
+  }());
+  function onkeydown()
+  {
+    setTimeout(updateLink,0);
+  }
+  (function(){
+    var textbox = document.getElementsByTagName('input')[0];
+    textbox.onkeydown = onkeydown;
+  }());
+}());
+</script>
 
 <p><small style="font-size:85%">(Not case-sensitive. Joining a room that doesn&rsquo;t exist automatically creates it.)</small>
 
