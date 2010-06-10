@@ -2,7 +2,7 @@
 pid: /var/src/lolgebra/shared/pids/thin.pid
 log: /var/src/lolgebra/shared/log/thin.log
 timeout: 30
-port: 4567
+socket: /var/sock/thin/thin.lolgebra.sock
 max_conns: 1024
 chdir: /var/src/lolgebra/current
 rackup: /var/src/lolgebra/shared/system/config/rackup.ru
