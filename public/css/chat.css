@@ -1,0 +1,49 @@
+body{
+  max-width: 6.5in;
+  margin: 0 auto;
+  font-family: sans-serif;
+  font-size: 11pt;
+  background-color: #def;
+}
+
+#title {
+  font-size:200%;
+  font-weight:bold;
+}
+
+#tagline {
+  font-style: italic;
+}
+
+div#chatbox-container {
+  width: 600px;
+  border:solid #adf 3px;
+  overflow: auto;
+}
+
+div#chatbox{
+  float: left;
+  height:400px;
+  width:594px;
+  overflow-y:scroll;
+  border: 1px solid #444;
+  padding:2pt;
+  background-color: white;
+}
+
+div#chatbox p{
+  margin:0 0 8pt 0;
+  padding:0;
+}
+.mathquill-textbox {
+  float: left;
+  background-color: white;
+  padding: 5px;
+  width: 588px;
+  border: none;
+  overflow: auto;
+}
+.mathquill-textbox .text{
+  font-family: sans-serif;
+  font-size: 11pt;
+}
