@@ -17,31 +17,25 @@ body{
 
 div#chatbox-container {
   width: 600px;
-  border:solid #adf 3px;
-  overflow: auto;
 }
 
 div#chatbox{
-  float: left;
   height:400px;
-  width:594px;
   overflow-y:scroll;
   border: 1px solid #444;
+  border-bottom: none;
   padding:2pt;
   background-color: white;
 }
-
 div#chatbox p{
   margin:0 0 8pt 0;
   padding:0;
 }
+
 .mathquill-textbox {
-  float: left;
   background-color: white;
-  padding: 5px;
-  width: 588px;
-  border: none;
-  overflow: auto;
+  padding: 1pt;
+  width: 596px;
 }
 .mathquill-textbox .text{
   font-family: sans-serif;
