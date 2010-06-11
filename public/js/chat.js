@@ -70,6 +70,8 @@ $(function()
           name: username || prompt('What\'s your name?', 'Nameless Lady in the Hood'),
           message: encodeURIComponent(jQ.blur().html().replace(/<span class="cursor blink"><\/span>/i,''))
         };
+        if(!msg.name)
+          return false;
         myOwnMsgs[myOwnMsgs.length] = {
           str: msg.name+':'+msg.message,
           jQ: appendMsg(msg).css('color','#445')
