@@ -66,12 +66,12 @@ $(function()
       if(e.which === 13 && !e.shiftKey && !(e.ctrlKey || e.metaKey) &&
           jQ.find(':first:not(.cursor)').length) //ensure nonempty
       {
-        var msg = {
-          name: username || prompt('What\'s your name?', 'Nameless Lady in the Hood'),
-          message: encodeURIComponent(jQ.blur().html().replace(/<span class="cursor blink"><\/span>/i,''))
-        };
+        preventDefault = true;
+        var msg = {};
+        msg.name = username || prompt('What\'s your name?','Nameless Lady in the Hood');
         if(!msg.name)
           return false;
+        msg.message = encodeURIComponent(jQ.blur().html().replace(/<span class="cursor blink"><\/span>/i,''));
         myOwnMsgs[myOwnMsgs.length] = {
           str: msg.name+':'+msg.message,
           jQ: appendMsg(msg).css('color','#445')
@@ -79,7 +79,6 @@ $(function()
         faye.publish('/'+room_name, msg);
         jQ.focus().trigger({ type: 'keydown', ctrlKey: true, which: 65 })
             .trigger({ type: 'keydown', which: 8 }); //ctrl-A, then backspace
-        preventDefault = true;
         return false;
       }
     }).keypress(function()
