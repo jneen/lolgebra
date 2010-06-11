@@ -34,6 +34,6 @@ get '/chat/:room' do
     )
   end
 
-  @username = params[:name] || "Anonymous"
+  @username = params[:name] || ""
   erb :chat
 end
