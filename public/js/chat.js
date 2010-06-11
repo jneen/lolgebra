@@ -1,9 +1,6 @@
 $(function()
 {
-  var data = PAGE_DATA;
-  if(!/^\?name=/.test(location.search))
-    location += '?name=' + prompt('What\'s your name?', 'Nameless Lady in the Hood');
-  var lastId, untilId;
+  var chatbox = $('#chatbox'), lastId, untilId;
   function appendMsg(msg)
   {
     var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight()),
@@ -19,14 +16,14 @@ $(function()
     for(var i = 0; i < response.messages.length; i += 1)
       appendMsg(response.messages[i]);
   }
-  var gettingOlder = false, chatbox = $('#chatbox');
+  var gettingOlder = false;
   function getOlder(){
     if(gettingOlder || untilId <= 0 || chatbox.scrollTop() > 200)
       return;
     gettingOlder = true;
     var end = untilId - 1;
     untilId = (untilId <= 10 ? 0 : untilId - 10);
-    $.getJSON('/chat/'+data.room_name+'/messages', { start: untilId, end: end }, function(response)
+    $.getJSON('/chat/'+room_name+'/messages', { start: untilId, end: end }, function(response)
     {
       for(var i = response.messages.length - 1; i >= 0; i -= 1)
         chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].name+':</b> '+decodeURIComponent(response.messages[i].message)+'</p>').prependTo(chatbox).outerHeight(true));
@@ -34,7 +31,7 @@ $(function()
     });
   }
   //first request to get latest 20 messages
-  $.getJSON('/chat/'+data.room_name+'/messages', { start: -20, end: -1 }, function(response)
+  $.getJSON('/chat/'+room_name+'/messages', { start: -20, end: -1 }, function(response)
   {
     if(!response || !response.status)
     {
@@ -47,11 +44,13 @@ $(function()
     //now that the first request went through, all the initialization code
     chatbox.scroll(getOlder);
     var faye = new Faye.Client('/faye', {timeout: 120}), myOwnMsgs = [];
-    faye.subscribe('/'+data.room_name, function(msg)
+    faye.subscribe('/'+room_name, function(msg)
     {
       for(var i = 0, str = msg.name+':'+msg.message; i < myOwnMsgs.length; i += 1)
         if(myOwnMsgs[i] && myOwnMsgs[i].str === str)
         {
+          if(!username)
+            location += '?name=' + msg.name;
           myOwnMsgs[i].jQ.css('color','black');
           delete myOwnMsgs[i];
           while(myOwnMsgs.length && !myOwnMsgs[myOwnMsgs.length - 1])
@@ -68,14 +67,14 @@ $(function()
           jQ.find(':first:not(.cursor)').length) //ensure nonempty
       {
         var msg = {
-          name: data.username,
+          name: username || prompt('What\'s your name?', 'Nameless Lady in the Hood'),
           message: encodeURIComponent(jQ.blur().html().replace(/<span class="cursor blink"><\/span>/i,''))
         };
         myOwnMsgs[myOwnMsgs.length] = {
           str: msg.name+':'+msg.message,
           jQ: appendMsg(msg).css('color','#445')
         };
-        faye.publish('/'+data.room_name, msg);
+        faye.publish('/'+room_name, msg);
         jQ.focus().trigger({ type: 'keydown', ctrlKey: true, which: 65 })
             .trigger({ type: 'keydown', which: 8 }); //ctrl-A, then backspace
         preventDefault = true;

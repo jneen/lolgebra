@@ -4,39 +4,33 @@
 
 <title><%=@room.name%> - Lolgebra Chatroom</title>
 
-<link rel="stylesheet" type="text/css" href="/css/shared.css" />
-<link rel="stylesheet" type="text/css" href="/css/chat.css" />
+<link rel="stylesheet" type="text/css" href="/css/shared.css">
+<link rel="stylesheet" type="text/css" href="/css/chat.css">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-
 <script type="text/javascript" src="http://laughinghan.github.com/mathquill/mathquill.js"></script>
-
 <script type="text/javascript" src="/faye.js"></script>
 
 <script type="text/javascript">
-PAGE_DATA = {
-  room_name: '<%=@room.name%>',
-  username: '<%=@username%>'
-}
+//Page Data
+window.room_name = '<%=@room.name%>';
+window.username = '<%=@username%>';
 </script>
 
 <script type="text/javascript" src="/js/chat.js"></script>
 
 <p>
-  <span id="title"><%=@room.name%></span><br />
+  <span id="title"><%=@room.name%></span><br>
   a <a href="/">lolgebra</a> chatroom:
-  <span id="tagline">
+  <i id="tagline">
     <a href="http://laughinghan.github.com/mathquill">MathQuill</a>-powered
     chatrooms where you can "LOL" in math!
-  </span>
+  </i>
 
 <div id="chatbox-container">
   <div id="chatbox">
     <p id="loading">Loading...</p>
   </div>
-
-  <form onsubmit="postMessage();return false">
-    <span class="mathquill-textbox"></span>
-  </form>
+  <span class="mathquill-textbox"></span>
 </div><!--"#chatbox-container"-->
 
 <small>

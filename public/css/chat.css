@@ -6,13 +6,13 @@ body{
   background-color: #def;
 }
 
-#title {
-  font-size:200%;
-  font-weight:bold;
+span#title {
+  font-size: 200%;
+  font-weight: bold;
 }
 
-#tagline {
-  font-style: italic;
+i#tagline {
+  font-size: 90%;
 }
 
 div#chatbox-container {
@@ -20,16 +20,20 @@ div#chatbox-container {
 }
 
 div#chatbox{
-  height:400px;
-  overflow-y:scroll;
+  height: 400px;
+  overflow: auto;
   border: 1px solid #444;
-  border-bottom: none;
-  padding:2pt;
+  margin-bottom: -1px;
+  padding: 2pt;
   background-color: white;
 }
 div#chatbox p{
-  margin:0 0 8pt 0;
-  padding:0;
+  margin: 0 0 8pt 0;
+  padding: 0;
+}
+
+input{
+  font-size: 100%;
 }
 
 .mathquill-textbox {
