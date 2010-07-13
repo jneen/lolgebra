@@ -49,10 +49,9 @@ body{
     }
   }
   var updateLink = (function(){
-    var text = document.getElementsByTagName('input')[0];
+    var link = document.getElementById('link'), text = document.getElementsByTagName('input')[0];
     return function()
     {
-      var link = document.getElementById('link');
       link.href = '/chat/' + text.value;
       link.innerHTML = 'http://lolgebra.com/chat/' + text.value;
     };
@@ -65,7 +64,7 @@ body{
     var textbox = document.getElementsByTagName('input')[0];
     textbox.onfocus = onfocus;
     textbox.onblur = onblur;
-    textbox.onkeydown = onkeydown;
+    textbox.onkeypress = textbox.onkeydown = onkeydown;
   }());
 }());
 </script>
