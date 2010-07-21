@@ -64,7 +64,7 @@ $(function()
     {
       var jQ = $(this);
       if(e.which === 13 && !e.shiftKey && !(e.ctrlKey || e.metaKey) &&
-          jQ.children(':first:not(.textarea,.cursor)').length) //ensure nonempty
+          jQ.children(':not(.textarea,.cursor):first').length) //ensure nonempty
       {
         preventDefault = true;
         var msg = {};
