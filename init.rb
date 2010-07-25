@@ -19,6 +19,11 @@ end
 
 get '/chat/:room' do
   @room_name = params[:room].downcase
-  @username = params[:name] || ''
-  erb :chat
+  response.set_cookie 'username',
+    @username = params[:name] || request.cookies['username'] || ''
+  unless params[:name] or not @username or @username == ''
+    redirect "/chat/#{params[:room]}?name=#{@username}"
+  else
+    erb :chat
+  end
 end
