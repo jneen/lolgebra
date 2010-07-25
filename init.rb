@@ -18,9 +18,6 @@ get '/health' do
 end
 
 get '/chat/:room' do
-  room_name = params[:room].downcase
-  @room = Room[room_name]
-
   # Note that if a client has already subscribed to a channel,
   # resubscribing just overwrites the block originally used to
   # subscribe. (I had originally assumed there'd be multiple
@@ -34,6 +31,7 @@ get '/chat/:room' do
     )
   end
 
+  @room_name = params[:room].downcase
   @username = params[:name] || ''
   erb :chat
 end

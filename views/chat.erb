@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<title><%=@room.name%> - Lolgebra Chatroom</title>
+<title><%=@room_name%> - Lolgebra Chatroom</title>
 
 <link rel="stylesheet" type="text/css" href="/css/shared.css">
 <link rel="stylesheet" type="text/css" href="/css/chat.css">
@@ -12,14 +12,14 @@
 
 <script type="text/javascript">
 //Page Data
-window.room_name = '<%=@room.name%>';
-window.username = '<%=@username%>';
+window.ROOM = '<%=@room_name%>';
+window.USERNAME = '<%=@username%>';
 </script>
 
 <script type="text/javascript" src="/js/chat.js"></script>
 
 <p>
-  <span id="title"><%=@room.name%></span><br>
+  <span id="title"><%=@room_name%></span><br>
   a <a href="/">lolgebra</a> chatroom:
   <i id="tagline">
     <a href="http://laughinghan.github.com/mathquill">MathQuill</a>-powered
