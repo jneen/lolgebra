@@ -3,7 +3,7 @@ $(function()
   var chatbox = $('#chatbox'), lastId, untilId;
   function appendMsg(msg)
   {
-    var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight()),
+    var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight()+15),
       msg = $('<p><b>'+msg.name+':</b> '+decodeURIComponent(msg.message)+'</p>');
     chatbox.append(msg);
     if(wasAtBottom)
