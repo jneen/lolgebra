@@ -49,8 +49,6 @@ $(function()
       for(var i = 0, str = msg.name+':'+msg.message; i < myOwnMsgs.length; i += 1)
         if(myOwnMsgs[i] && myOwnMsgs[i].str === str)
         {
-          if(!username)
-            location += '?name=' + msg.name;
           myOwnMsgs[i].jQ.css('color','black');
           delete myOwnMsgs[i];
           while(myOwnMsgs.length && !myOwnMsgs[myOwnMsgs.length - 1])
@@ -76,7 +74,11 @@ $(function()
           str: msg.name+':'+msg.message,
           jQ: appendMsg(msg).css('color','#445')
         };
-        faye.publish('/'+ROOM, msg);
+        $.post('/chat/'+ROOM+'/message', msg, function()
+        {
+          if(!USERNAME)
+            location += '?name=' + msg.name;
+        });
         jQ.focus().trigger({ type: 'keydown', ctrlKey: true, which: 65 })
             .trigger({ type: 'keydown', which: 8 }); //ctrl-A, then backspace
         return false;

@@ -12,3 +12,20 @@ get '/chat/:room/messages' do
     :last_id => (last < 0 ? room.messages.count + last : last)
   }.to_json
 end
+
+post '/chat/:room/message' do
+  params[:message].strip!
+  return if params[:message].empty?
+
+  room = params[:room]
+
+  env['faye.client'].publish("/#{room}", {
+    'name' => params[:name],
+    'message' => params[:message]
+  })
+
+  Room[room].messages << Message.new(
+    :content => params[:message],
+    :name => params[:name]
+  )
+end
