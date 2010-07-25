@@ -2,6 +2,8 @@ require 'faye'
 use Faye::RackAdapter, :mount => '/faye', :timeout => 25
 
 get '/chat/:room/messages' do
+  env['faye.client'].unsubscribe '/*'
+
   room = Room[params[:room]]
   first = params[:start].to_i
   last = (params[:end] || -1).to_i
