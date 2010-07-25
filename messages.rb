@@ -1,8 +1,8 @@
 require 'faye'
 use Faye::RackAdapter, :mount => '/faye', :timeout => 25
 
-get '/chat/:room_name/messages' do
-  room = Room[params[:room_name]]
+get '/chat/:room/messages' do
+  room = Room[params[:room]]
   first = params[:start].to_i
   last = (params[:end] || -1).to_i
 
