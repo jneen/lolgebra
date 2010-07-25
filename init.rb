@@ -6,7 +6,7 @@ require 'models'
 require 'messages'
 
 ROOT = File.expand_path(File.dirname(__FILE__))
-set :views, File.join(ROOT, "views")
+set :views, File.join(ROOT, 'views')
 REVISION = begin
   File.read(File.join(ROOT, 'REVISION'))
 rescue Errno::ENOENT
@@ -34,6 +34,6 @@ get '/chat/:room' do
     )
   end
 
-  @username = params[:name] || ""
+  @username = params[:name] || ''
   erb :chat
 end
