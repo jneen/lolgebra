@@ -1,4 +1,4 @@
-body{
+body {
   max-width: 6.5in;
   margin: 0 auto;
   font-family: sans-serif;
@@ -19,7 +19,7 @@ div#chatbox-container {
   width: 600px;
 }
 
-div#chatbox{
+div#chatbox {
   height: 400px;
   overflow: auto;
   border: 1px solid #444;
@@ -27,12 +27,12 @@ div#chatbox{
   padding: 2pt;
   background-color: white;
 }
-div#chatbox p{
+div#chatbox p {
   margin: 0 0 8pt 0;
   padding: 0;
 }
 
-input{
+input {
   font-size: 100%;
 }
 
