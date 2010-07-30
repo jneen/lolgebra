@@ -41,7 +41,7 @@ input {
   padding: 1pt;
   width: 596px;
 }
-.mathquill-textbox, .mathquill-textbox .text{
+.mathquill-textbox, .mathquill-rendered-math .text{
   font-family: sans-serif;
   font-size: 11pt;
 }
