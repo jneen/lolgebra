@@ -6,12 +6,33 @@ body {
   background-color: #def;
 }
 
-span#title {
-  font-size: 200%;
+#title {
+  font-size: 250%;
   font-weight: bold;
+  margin: 0;
+  float: left;
 }
 
-i#tagline {
+#name {
+  display: inline-block;
+  margin-left: 1em;
+}
+#name span:first-child {
+  font-size: 80%;
+  margin-top: .1em;
+  margin-bottom: -.2em;
+  float: right;
+}
+#name span {
+  font-size: 150%;
+  display: block;
+  clear: right;
+}
+
+#tagline {
+  clear: left;
+}
+#tagline i {
   font-size: 90%;
 }
 

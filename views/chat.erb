@@ -21,10 +21,14 @@ window.USERNAME = '<%=@username%>';
 </head>
 <body>
 
-<p>
-  <span id="title"><%=@room_name%></span><br>
+<h1 id="title"><%=@room_name%></h1>
+<%="<span id=\"name\">
+  <span>name:</span>
+  <span>#{@username}</span>
+</span>" unless @username == ''%>
+<p id="tagline">
   a <a href="/">lolgebra</a> chatroom:
-  <i id="tagline">
+  <i>
     <a href="http://laughinghan.github.com/mathquill">MathQuill</a>-powered
     chatrooms where you can "LOL" in math!
   </i>
