@@ -20,7 +20,7 @@ post '/chat/:room/message' do
   room = params[:room]
 
   env['faye.client'].publish("/#{room}", {
-    'name' => params[:name] or 'Anonymous',
+    'name' => (params[:name] or 'Anonymous'),
     'message' => params[:message]
   })
 
