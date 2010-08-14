@@ -76,7 +76,7 @@ $(function()
         };
         $.post('/chat/'+ROOM+'/message', msg, function()
         {
-          if(!USERNAME)
+          if(!USERNAME && msg.name)
             location = location.pathname + '?name=' + msg.name;
         });
         jQ.focus().trigger({ type: 'keydown', ctrlKey: true, which: 65 })
