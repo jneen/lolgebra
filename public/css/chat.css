@@ -36,10 +36,6 @@ body {
   font-size: 90%;
 }
 
-div#chatbox-container {
-  width: 600px;
-}
-
 div#chatbox {
   height: 400px;
   overflow: auto;
