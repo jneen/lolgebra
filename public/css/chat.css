@@ -56,7 +56,7 @@ input {
 .mathquill-textbox {
   background-color: white;
   padding: 1pt;
-  width: 596px;
+  display: block;
 }
 .mathquill-textbox, .mathquill-rendered-math .text{
   font-family: sans-serif;
