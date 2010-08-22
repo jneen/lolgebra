@@ -28,4 +28,6 @@ post '/chat/:room/message' do
     :content => params[:message],
     :name => params[:name]
   )
+  puts 'anything wrong?'
+  return 'Everythings Going Great should return 200 OK'
 end
