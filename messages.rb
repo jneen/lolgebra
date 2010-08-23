@@ -28,4 +28,6 @@ post '/chat/:room/message' do
     :content => params[:message],
     :name => params[:name]
   )
+
+  return ''
 end
