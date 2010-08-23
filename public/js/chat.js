@@ -77,7 +77,7 @@ $(function()
         $.post('/chat/'+ROOM+'/message', msg, function()
         {
           if(!USERNAME && msg.name)
-            location.replace(location.pathname + '?name=' + msg.name);
+            location = location.pathname + '?name=' + msg.name;
         });
         jQ.focus().trigger({ type: 'keydown', ctrlKey: true, which: 65 })
             .trigger({ type: 'keydown', which: 8 }); //ctrl-A, then backspace
