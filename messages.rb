@@ -29,5 +29,5 @@ post '/chat/:room/message' do
     :name => params[:name]
   )
 
-  return ''
+  return
 end
