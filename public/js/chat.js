@@ -1,7 +1,8 @@
 $(function()
 {
   var chatbox = $('#chatbox'), lastId, untilId;
-  function appendMsg(msg)
+
+  function appendMsg(msg) //to chatbox, like when recieving new msg
   {
     var wasAtBottom = (chatbox[0].scrollHeight - chatbox.scrollTop() <= chatbox.outerHeight()+15),
       msg = $('<p><b>'+msg.name+':</b> '+decodeURIComponent(msg.message)+'</p>');
@@ -10,20 +11,25 @@ $(function()
        chatbox.scrollTop(chatbox[0].scrollHeight);
     return msg;
   }
+
+  //on scroll chatbox
   var gettingOlder = false;
-  function getOlder(){
+  function getOlder()
+  {
     if(gettingOlder || untilId <= 0 || chatbox.scrollTop() > 200)
       return;
     gettingOlder = true;
     var end = untilId - 1;
     untilId = (untilId <= 10 ? 0 : untilId - 10);
-    $.getJSON('/chat/'+ROOM+'/messages', { start: untilId, end: end }, function(response)
+    $.getJSON('/chat/'+ROOM+'/messages', { start: untilId, end: end },
+      function(response)
     {
       for(var i = response.messages.length - 1; i >= 0; i -= 1)
         chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].name+':</b> '+decodeURIComponent(response.messages[i].message)+'</p>').prependTo(chatbox).outerHeight(true));
      gettingOlder = false;
     });
   }
+
   //first request to get latest 20 messages
   $.getJSON('/chat/'+ROOM+'/messages', { start: -20, end: -1 }, function(response)
   {
