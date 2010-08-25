@@ -24,9 +24,18 @@ $(function()
     $.getJSON('/chat/'+ROOM+'/messages', { start: untilId, end: end },
       function(response)
     {
-      for(var i = response.messages.length - 1; i >= 0; i -= 1)
-        chatbox.scrollTop(chatbox.scrollTop()+$('<p><b>'+response.messages[i].name+':</b> '+decodeURIComponent(response.messages[i].message)+'</p>').prependTo(chatbox).outerHeight(true));
-     gettingOlder = false;
+      var msgs = '';
+      $.each(response.messages, function(i, msg)
+      {
+        msgs+='<p><b>'+msg.name+':</b> '+decodeURIComponent(msg.message)+'</p>';
+      });
+      msgs = $(msgs);
+      var scrollTop = chatbox.scrollTop(), height = 0;
+      msgs.prependTo(chatbox).each(function(){
+        height += $(this).outerHeight(true);
+      });
+      chatbox.scrollTop(scrollTop + height);
+      gettingOlder = false;
     });
   }
 
