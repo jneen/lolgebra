@@ -10,12 +10,6 @@ $(function()
        chatbox.scrollTop(chatbox[0].scrollHeight);
     return msg;
   }
-  function parseResponse(response)
-  {
-    lastId = +response.last_id;
-    for(var i = 0; i < response.messages.length; i += 1)
-      appendMsg(response.messages[i]);
-  }
   var gettingOlder = false;
   function getOlder(){
     if(gettingOlder || untilId <= 0 || chatbox.scrollTop() > 200)
@@ -39,8 +33,11 @@ $(function()
       return;
     }
     $('#loading').remove();
-    parseResponse(response);
+    lastId = +response.last_id;
     untilId = lastId - 19;
+    for(var i in response.messages)
+      appendMsg(response.messages[i]);
+
     //now that the first request went through, all the initialization code
     chatbox.scroll(getOlder);
     var faye = new Faye.Client('/faye', {timeout: 120}), myOwnMsgs = [];
