@@ -54,11 +54,10 @@ input {
   font-size: 100%;
 }
 
-.mathquill-textbox {
+#mathtextbox {
   background-color: white;
   padding: 1pt;
   display: block;
-  width: expression(+this.offsetParent.style.width.slice(0,-2) - 2);
 }
 .mathquill-textbox, .mathquill-rendered-math .text{
   font-family: sans-serif;
