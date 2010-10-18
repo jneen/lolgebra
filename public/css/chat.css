@@ -58,7 +58,7 @@ input {
   background-color: white;
   padding: 1pt;
   display: block;
-  width: 100%;
+  width: expression(+this.offsetParent.style.width.slice(0,-2) - 2);
 }
 .mathquill-textbox, .mathquill-rendered-math .text{
   font-family: sans-serif;
