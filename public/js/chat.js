@@ -79,8 +79,7 @@ $(function()
         preventDefault = true;
         var msg = {};
         msg.name = USERNAME || prompt('What\'s your name?','Nameless Lady in the Hood');
-        if(!msg.name)
-          return false;
+        if(!msg.name) return;
         msg.message = encodeURIComponent(jQ.blur().mathquill('html'));
         myOwnMsgs[myOwnMsgs.length] = {
           str: msg.name+':'+msg.message,
@@ -91,16 +90,7 @@ $(function()
           if(!USERNAME && msg.name)
             location = location.pathname + '?name=' + msg.name;
         });
-        jQ.focus().trigger({ type: 'keydown', ctrlKey: true, which: 65 })
-            .trigger({ type: 'keydown', which: 8 }); //ctrl-A, then backspace
-        return false;
-      }
-    }).keypress(function()
-    {
-      if(preventDefault)
-      {
-        preventDefault = false;
-        return false;
+        jQ.mathquill('latex','').focus(); //empty and focus
       }
     }).focus();
   });
